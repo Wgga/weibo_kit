@@ -1,0 +1,13 @@
+{
+  "name": "weibo_kit",
+  "version": "1.0.0",
+  "description": "Weibo OpenSDK plugin for Flutter on HarmonyOS",
+  "main": "index.ets",
+  "author": "Wgga",
+  "license": "MIT",
+  "dependencies": {
+    "core": "file:./libs/core.har"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}

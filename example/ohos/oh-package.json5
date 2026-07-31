@@ -1,0 +1,13 @@
+{
+  "modelVersion": "5.1.0",
+  "name": "weibo_kit_example",
+  "version": "1.0.0",
+  "description": "HarmonyOS host project for the weibo_kit Flutter example.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {},
+  "devDependencies": {
+    "@ohos/hypium": "1.0.6"
+  }
+}

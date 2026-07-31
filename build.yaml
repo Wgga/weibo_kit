@@ -1,0 +1,13 @@
+targets:
+  $default:
+    sources:
+      - $package$
+      - pubspec.yaml
+      - lib/$lib$
+      - lib/**.dart
+    builders:
+      json_serializable:
+        generate_for:
+          - lib/src/model/*.dart
+        options:
+          explicit_to_json: true

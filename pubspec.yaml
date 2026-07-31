@@ -1,0 +1,39 @@
+name: weibo_kit
+description: A Flutter plugin for Weibo authentication and sharing on Android, iOS, and HarmonyOS.
+version: 1.0.0
+homepage: https://github.com/Wgga/weibo_kit
+repository: https://github.com/Wgga/weibo_kit.git
+issue_tracker: https://github.com/Wgga/weibo_kit/issues
+
+environment:
+  sdk: '>=3.7.0 <4.0.0'
+  flutter: ">=3.29.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.0.2
+
+  args: ^2.7.0
+  xml: ^6.6.1
+
+  json_annotation: ^4.8.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+  build_runner: ^2.4.15
+  json_serializable: ^6.9.4
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: io.github.wgga.weibo_kit
+        pluginClass: WeiboKitPlugin
+      ios:
+        pluginClass: WeiboKitPlugin
+      ohos:
+        pluginClass: WeiboKitPlugin
