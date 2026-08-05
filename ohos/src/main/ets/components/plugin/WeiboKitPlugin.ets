@@ -115,6 +115,11 @@ export default class WeiboKitPlugin implements FlutterPlugin, MethodCallHandler,
   }
 
   private registerApp(call: MethodCall, result: MethodResult): void {
+    if (this.registered) {
+      result.success(null);
+      return;
+    }
+
     const authInfo: AuthInfo = new AuthInfo(
       this.requireAbilityContext(),
       this.stringArg(call, 'appKey'),

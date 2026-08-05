@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'weibo_kit'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'Flutter plugin for Weibo authentication and sharing.'
   s.description      = s.summary
   s.homepage         = 'https://github.com/Wgga/weibo_kit'

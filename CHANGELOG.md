@@ -1,3 +1,8 @@
+## 1.0.1
+
+* Fix HarmonyOS hot restart hanging while waiting for repeated Weibo SDK
+  registration to complete.
+
 ## 1.0.0
 
 * Initial stable release.
