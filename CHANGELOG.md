@@ -1,3 +1,8 @@
+## 1.0.2
+
+* Align iOS simulator architecture exclusions with dependent CocoaPods to
+  avoid `EXCLUDED_ARCHS` merge warnings.
+
 ## 1.0.1
 
 * Fix HarmonyOS hot restart hanging while waiting for repeated Weibo SDK

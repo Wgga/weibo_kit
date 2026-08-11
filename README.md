@@ -43,7 +43,7 @@
 
 ```yaml
 dependencies:
-  weibo_kit: ^1.0.0
+  weibo_kit: ^1.0.2
 ```
 
 ## 宿主配置
