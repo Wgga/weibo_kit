@@ -113,6 +113,55 @@ void main() {
     expect(info, isNot(contains('wbold')));
   });
 
+  test('initializes empty plist roots', () async {
+    final File info = File('${root.path}/ios/Runner/Info.plist')
+      ..writeAsStringSync(_emptyPlist);
+    final File entitlements = File(
+      '${root.path}/ios/Runner/Runner.entitlements',
+    )..writeAsStringSync(_emptyPlist);
+    final WeiboKitSetupOptions options = WeiboKitSetupOptions(
+      projectRoot: root,
+      appKey: '123456',
+      universalLink: 'https://example.com/weibo/',
+      platforms: const <WeiboKitSetupPlatform>{WeiboKitSetupPlatform.ios},
+    );
+
+    final WeiboKitConfigurator configurator = WeiboKitConfigurator();
+    final WeiboKitSetupResult first = await configurator.configure(options);
+    expect(first.hasPendingChanges, isTrue);
+    expect(first.changedFiles, hasLength(3));
+    expect(info.readAsStringSync(), contains('wb123456'));
+    expect(entitlements.readAsStringSync(), contains('<dict>'));
+    expect(entitlements.readAsStringSync(), contains('applinks:example.com'));
+
+    final WeiboKitSetupResult second = await configurator.configure(options);
+    expect(second.hasPendingChanges, isFalse);
+  });
+
+  test('rejects a non-dictionary plist root', () async {
+    File('${root.path}/ios/Runner/Runner.entitlements')
+      ..createSync(recursive: true)
+      ..writeAsStringSync(_arrayPlist);
+
+    await expectLater(
+      WeiboKitConfigurator().configure(
+        WeiboKitSetupOptions(
+          projectRoot: root,
+          appKey: '123456',
+          universalLink: 'https://example.com/weibo/',
+          platforms: const <WeiboKitSetupPlatform>{WeiboKitSetupPlatform.ios},
+        ),
+      ),
+      throwsA(
+        isA<FormatException>().having(
+          (FormatException error) => error.message,
+          'message',
+          'plist root dict is missing',
+        ),
+      ),
+    );
+  });
+
   test('configures HarmonyOS idempotently', () async {
     final WeiboKitConfigurator configurator = WeiboKitConfigurator();
     final WeiboKitSetupOptions options = WeiboKitSetupOptions(
@@ -160,6 +209,16 @@ void main() {
 const String _plist = '''<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0"><dict><key>CFBundleName</key><string>Host</string></dict></plist>
+''';
+
+const String _emptyPlist = '''<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"></plist>
+''';
+
+const String _arrayPlist = '''<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><array/></plist>
 ''';
 
 const String _project = '''buildSettings = {

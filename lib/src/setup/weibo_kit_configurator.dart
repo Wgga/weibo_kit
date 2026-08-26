@@ -147,10 +147,11 @@ class WeiboKitConfigurator {
       throw StateError('Info.plist not found: ${file.path}');
     }
     final XmlDocument document = XmlDocument.parse(file.readAsStringSync());
-    final XmlElement root =
-        document.rootElement.getElement('dict') ??
-        (throw const FormatException('plist root dict is missing'));
-    bool changed = false;
+    final XmlElement plist = document.rootElement;
+    final bool rootWasEmpty =
+        plist.name.local == 'plist' && plist.childElements.isEmpty;
+    final XmlElement root = _rootDict(document, createIfEmpty: true);
+    bool changed = rootWasEmpty;
 
     XmlElement? urlTypes = _valueForKey(root, 'CFBundleURLTypes');
     if (urlTypes == null) {
@@ -254,14 +255,15 @@ class WeiboKitConfigurator {
         file.existsSync()
             ? XmlDocument.parse(file.readAsStringSync())
             : XmlDocument.parse(_emptyPlist);
-    final XmlElement root =
-        document.rootElement.getElement('dict') ??
-        (throw const FormatException('plist root dict is missing'));
+    final XmlElement plist = document.rootElement;
+    final bool rootWasEmpty =
+        plist.name.local == 'plist' && plist.childElements.isEmpty;
+    final XmlElement root = _rootDict(document, createIfEmpty: true);
     XmlElement? domains = _valueForKey(
       root,
       'com.apple.developer.associated-domains',
     );
-    bool changed = false;
+    bool changed = rootWasEmpty;
     if (domains == null) {
       domains = XmlElement(XmlName('array'));
       _appendKeyValue(root, 'com.apple.developer.associated-domains', domains);
@@ -332,6 +334,23 @@ class WeiboKitConfigurator {
       }
     }
     return null;
+  }
+
+  XmlElement _rootDict(XmlDocument document, {required bool createIfEmpty}) {
+    final XmlElement plist = document.rootElement;
+    if (plist.name.local != 'plist') {
+      throw const FormatException('plist root dict is missing');
+    }
+    final List<XmlElement> values = plist.childElements.toList();
+    if (values.length == 1 && values.single.name.local == 'dict') {
+      return values.single;
+    }
+    if (values.isEmpty && createIfEmpty) {
+      final XmlElement dict = XmlElement(XmlName('dict'));
+      plist.children.add(dict);
+      return dict;
+    }
+    throw const FormatException('plist root dict is missing');
   }
 
   String? _stringValue(XmlElement dict, String key) {
