@@ -1,5 +1,10 @@
 #import "WeiboKitPlugin.h"
+// xcframework 的 module 名是 WeiboSDK，CocoaPods 上的 Weibo_SDK pod 则是 Weibo_SDK
+#if __has_include(<WeiboSDK/WeiboSDK.h>)
+#import <WeiboSDK/WeiboSDK.h>
+#else
 #import <Weibo_SDK/WeiboSDK.h>
+#endif
 #if __has_include(<Flutter/FlutterSceneLifeCycle.h>)
 #import <Flutter/FlutterSceneLifeCycle.h>
 #define WEIBO_KIT_HAS_SCENE_LIFECYCLE 1

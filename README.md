@@ -33,7 +33,7 @@
 | 平台 | SDK |
 | --- | --- |
 | Android | `io.github.sinaweibosdk:core:13.10.8-opt1` |
-| iOS | `Weibo_SDK ~> 3.3.5` |
+| iOS | 内置官方 `WeiboSDK.xcframework`（`sinaweibosdk/weibo_ios_sdk` master `907f308`） |
 | HarmonyOS | 官方 `core.har 25.4.0` |
 
 微博 Android SDK 的上游版本是 13.10.8，其 Maven Central 制品版本名为
@@ -43,7 +43,7 @@
 
 ```yaml
 dependencies:
-  weibo_kit: ^1.0.2
+  weibo_kit: ^1.0.3
 ```
 
 ## 宿主配置
